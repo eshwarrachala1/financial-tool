@@ -1,13 +1,12 @@
 # app/services/stock_service.py
 
 import requests
-import os
 from app.config import settings
 
 BASE_URL = "https://www.alphavantage.co/query"
 
 def get_realtime_stock_data(symbol: str):
-    """Fetch real-time stock data from Alpha Vantage"""
+    """Fetch real-time stock data from Alpha Vantage and map it to our Pydantic model"""
     params = {
         "function": "GLOBAL_QUOTE",
         "symbol": symbol,
@@ -15,27 +14,24 @@ def get_realtime_stock_data(symbol: str):
     }
     response = requests.get(BASE_URL, params=params)
     data = response.json()
-    
+
+    # Check if the data contains the 'Global Quote' key
     if "Global Quote" in data:
-        return data["Global Quote"]
+        raw_data = data["Global Quote"]
+
+        # Map the incoming keys to the expected fields
+        stock_data = {
+            "symbol": raw_data.get("01. symbol"),
+            "open": float(raw_data.get("02. open")),
+            "high": float(raw_data.get("03. high")),
+            "low": float(raw_data.get("04. low")),
+            "price": float(raw_data.get("05. price")),
+            "volume": int(raw_data.get("06. volume")),
+            "latest_trading_day": raw_data.get("07. latest trading day"),
+            "previous_close": float(raw_data.get("08. previous close")),
+            "change": float(raw_data.get("09. change")),
+            "change_percent": raw_data.get("10. change percent")
+        }
+        return stock_data
     else:
         raise ValueError("Error fetching real-time data for the stock symbol.")
-
-def get_historical_stock_data(symbol: str, start_date: str, end_date: str):
-    """Fetch historical stock data from Alpha Vantage"""
-    params = {
-        "function": "TIME_SERIES_DAILY_ADJUSTED",
-        "symbol": symbol,
-        "outputsize": "full",
-        "apikey": settings.ALPHA_VANTAGE_API_KEY
-    }
-    response = requests.get(BASE_URL, params=params)
-    data = response.json()
-
-    # Filter data by start_date and end_date
-    if "Time Series (Daily)" in data:
-        time_series = data["Time Series (Daily)"]
-        filtered_data = {date: value for date, value in time_series.items() if start_date <= date <= end_date}
-        return filtered_data
-    else:
-        raise ValueError("Error fetching historical data for the stock symbol.")
