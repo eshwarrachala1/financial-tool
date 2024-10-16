@@ -6,7 +6,7 @@ from datetime import datetime
 from fastapi import HTTPException
 
 
-BASE_URL = "https://www.alphavantage.co/query"
+
 
 def get_realtime_stock_data(symbol: str):
     """Fetch real-time stock data from Alpha Vantage and map it to our Pydantic model"""
@@ -15,7 +15,7 @@ def get_realtime_stock_data(symbol: str):
         "symbol": symbol,
         "apikey": settings.ALPHA_VANTAGE_API_KEY_FREE
     }
-    response = requests.get(BASE_URL, params=params)
+    response = requests.get(settings.STOCK_BASE_URL, params=params)
     data = response.json()
 
     # Check if the data contains the 'Global Quote' key
@@ -52,7 +52,7 @@ def get_historical_stock_data(symbol: str, start_date: str, end_date: str):
     }
 
     try:
-        response = requests.get(BASE_URL, params=params)
+        response = requests.get(settings.STOCK_BASE_URL, params=params)
         data = response.json()
 
         # Check if there are any API errors like rate limiting or invalid symbols

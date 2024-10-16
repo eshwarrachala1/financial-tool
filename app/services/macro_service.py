@@ -4,7 +4,7 @@ import requests
 from app.config import settings
 
 # Base URL for the FRED API
-FRED_BASE_URL = "https://api.stlouisfed.org/fred/series/observations"
+
 
 def get_gdp_data(country: str, start_date: str, end_date: str):
     """Fetch GDP data for a specific country between start_date and end_date"""
@@ -23,7 +23,7 @@ def get_gdp_data(country: str, start_date: str, end_date: str):
         "observation_end": end_date,
     }
 
-    response = requests.get(FRED_BASE_URL, params=params)
+    response = requests.get(settings.MACRO_BASE_URL, params=params)
     data = response.json()
 
     if "observations" in data:
@@ -49,7 +49,7 @@ def get_inflation_data(country: str, start_date: str, end_date: str):
         "observation_end": end_date,
     }
 
-    response = requests.get(FRED_BASE_URL, params=params)
+    response = requests.get(settings.MACRO_BASE_URL, params=params)
     data = response.json()
 
     if "observations" in data:

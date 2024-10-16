@@ -10,7 +10,7 @@ nltk.download('vader_lexicon')
 vader_analyzer = SentimentIntensityAnalyzer()
 
 # You can use a news API like NewsAPI, but we'll mock the news data for now.
-NEWS_API_BASE_URL = "https://newsapi.org/v2/everything"
+
 
 def fetch_recent_news(symbol: str):
     """
@@ -24,7 +24,7 @@ def fetch_recent_news(symbol: str):
         "language": "en"
     }
 
-    response = requests.get(NEWS_API_BASE_URL, params=params)
+    response = requests.get(settings.NEWS_API_BASE_URL, params=params)
     news_data = response.json()
 
     if "articles" in news_data:
