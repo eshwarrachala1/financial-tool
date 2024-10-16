@@ -13,7 +13,7 @@ def get_realtime_stock_data(symbol: str):
     params = {
         "function": "GLOBAL_QUOTE",
         "symbol": symbol,
-        "apikey": settings.ALPHA_VANTAGE_API_KEY
+        "apikey": settings.ALPHA_VANTAGE_API_KEY_FREE
     }
     response = requests.get(BASE_URL, params=params)
     data = response.json()
@@ -47,7 +47,7 @@ def get_historical_stock_data(symbol: str, start_date: str, end_date: str):
     params = {
         "function": "TIME_SERIES_DAILY_ADJUSTED",
         "symbol": symbol,
-        "apikey": settings.ALPHA_VANTAGE_API_KEY,
+        "apikey": settings.ALPHA_VANTAGE_API_KEY_FREE,
         "outputsize": "full",  # Fetch the full history of the stock
     }
 
