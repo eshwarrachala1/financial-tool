@@ -9,7 +9,7 @@ router = APIRouter()
 async def get_sentiment_analysis(symbol: str):
     """Fetch sentiment analysis for a specific stock symbol"""
     try:
-        sentiment_data = await sentiment_service.analyze_sentiment(symbol)
+        sentiment_data = sentiment_service.get_stock_sentiment(symbol)
         return sentiment_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
