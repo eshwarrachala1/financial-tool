@@ -31,3 +31,5 @@ def get_inflation_data(country: str, start_date: str, end_date: str):
         return inflation_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+     
