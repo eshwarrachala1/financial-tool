@@ -8,7 +8,7 @@ from fastapi import HTTPException
 
 
 
-def get_realtime_stock_data(symbol: str):
+def get_stock_data(symbol: str):
     """Fetch real-time stock data from Alpha Vantage and map it to our Pydantic model"""
     params = {
         "function": "GLOBAL_QUOTE",
@@ -38,8 +38,7 @@ def get_realtime_stock_data(symbol: str):
         return stock_data
     else:
         raise ValueError("Error fetching real-time data for the stock symbol.")
-      
-def get_historical_stock_data(symbol: str, start_date: str, end_date: str):
+        
     """
     Fetch historical stock data for the given symbol between start_date and end_date.
     """
