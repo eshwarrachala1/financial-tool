@@ -31,11 +31,11 @@ def get_historical_stock_data(symbol: str, start_date: str, end_date: str):
         raise HTTPException(status_code=500, detail=str(e))
     
     
-@router.get("/trend/{symbol}", response_model=RealTimeStockData)
+@router.get("/trend/{symbol}")
 def get_stock_data(symbol: str):
     """Fetch real-time stock data for a given symbol"""
     try:
         stock_data = stock_trend_service.get_stock_trend_data(symbol)
-        return RealTimeStockData(**stock_data)
+        return stock_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
